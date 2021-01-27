@@ -17,6 +17,10 @@ import (
 )
 
 type PatientController struct {
+	ps service.PatientService
+	dp util.DifferentialPrivacy
+	pic util.Picture
+	user service.UserService
 }
 
 func (pc *PatientController) Router(engine *gin.Engine) {
@@ -45,8 +49,7 @@ func (pc *PatientController) Router(engine *gin.Engine) {
 
 //差分隐私
 func (pc *PatientController) differentialPrivacy(ctx *gin.Context) {
-	var patientService service.PatientService
-	success, err := patientService.CreateNewPatientCopyTable()
+	success, err := pc.ps.CreateNewPatientCopyTable()
 	if err != nil {
 		tool.Failed(ctx, "failed")
 		ctx.Abort()
@@ -57,14 +60,13 @@ func (pc *PatientController) differentialPrivacy(ctx *gin.Context) {
 		ctx.Abort()
 		return
 	}
-	patientsCopy, err := patientService.GetPatientCopyData()
+	patientsCopy, err := pc.ps.GetPatientCopyData()
 	if err != nil {
 		tool.Failed(ctx, "failed")
 		ctx.Abort()
 		return
 	}
-	var dp util.DifferentialPrivacy
-	dp.DifferPrivacy(patientsCopy)
+	pc.dp.DifferPrivacy(patientsCopy)
 	_, err = util.EmbedOldPic()
 	if err != nil {
 		tool.Failed(ctx, err)
@@ -76,16 +78,14 @@ func (pc *PatientController) differentialPrivacy(ctx *gin.Context) {
 
 //生成变换后图片
 func (pc *PatientController) generateSecretOldPic(ctx *gin.Context) {
-	var pic util.Picture
-	pic.Arnold("", 3)
+	pc.pic.Arnold("", 3)
 }
 
 //获取用户数据
 func (pc *PatientController) userPatientCopyData(ctx *gin.Context) {
 	claims := ctx.MustGet("claims").(*tool.CustomClaims)
 	page, _ := strconv.Atoi(ctx.Query("page"))
-	var patientService service.PatientService
-	patientData, err := patientService.GetPageUserPatientCopyData(claims.Phone, 50, page)
+	patientData, err := pc.ps.GetPageUserPatientCopyData(claims.Phone, 50, page)
 	if err != nil {
 		tool.Failed(ctx, err)
 		ctx.Abort()
@@ -97,8 +97,7 @@ func (pc *PatientController) userPatientCopyData(ctx *gin.Context) {
 //获取原始表数据
 func (pc *PatientController) patientData(ctx *gin.Context) {
 	page, _ := strconv.Atoi(ctx.Query("page"))
-	var patientService service.PatientService
-	patientData, err := patientService.GetPagePatientData(50, page)
+	patientData, err := pc.ps.GetPagePatientData(50, page)
 	if err != nil {
 		tool.Failed(ctx, err)
 		ctx.Abort()
@@ -116,8 +115,7 @@ func (pc *PatientController) addPatient(ctx *gin.Context) {
 		ctx.Abort()
 		return
 	}
-	var patientService service.PatientService
-	err = patientService.InsertPatient(patient)
+	err = pc.ps.InsertPatient(patient)
 	if err != nil {
 		tool.Failed(ctx, err)
 		ctx.Abort()
@@ -135,8 +133,7 @@ func (pc *PatientController) deletePatient(ctx *gin.Context) {
 		ctx.Abort()
 		return
 	}
-	var patientService service.PatientService
-	err = patientService.DeletePatient(patient)
+	err = pc.ps.DeletePatient(patient)
 	if err != nil {
 		tool.Failed(ctx, err)
 		ctx.Abort()
@@ -154,8 +151,7 @@ func (pc *PatientController) updatePatient(ctx *gin.Context) {
 		ctx.Abort()
 		return
 	}
-	var patientService service.PatientService
-	err = patientService.UpdatePatient(patient)
+	err = pc.ps.UpdatePatient(patient)
 	if err != nil {
 		tool.Failed(ctx, err)
 		ctx.Abort()
@@ -178,8 +174,7 @@ func (pc *PatientController) search(ctx *gin.Context) {
 	claims := ctx.MustGet("claims").(*tool.CustomClaims)
 	page, _ := strconv.Atoi(ctx.Query("page"))
 	pattern := ctx.Query("pattern")
-	var patientService service.PatientService
-	patientData, err := patientService.GetPageUserPatientCopyDataByPattern(claims.Phone, 50, page, pattern)
+	patientData, err := pc.ps.GetPageUserPatientCopyDataByPattern(claims.Phone, 50, page, pattern)
 	if err != nil {
 		tool.Failed(ctx, err)
 		ctx.Abort()
@@ -192,8 +187,7 @@ func (pc *PatientController) search(ctx *gin.Context) {
 func (pc *PatientController) searchOrigin(ctx *gin.Context) {
 	page, _ := strconv.Atoi(ctx.Query("page"))
 	pattern := ctx.Query("pattern")
-	var patientService service.PatientService
-	patientData, err := patientService.GetPagePatientDataByPattern(50, page, pattern)
+	patientData, err := pc.ps.GetPagePatientDataByPattern(50, page, pattern)
 	if err != nil {
 		tool.Failed(ctx, err)
 		ctx.Abort()
@@ -212,8 +206,7 @@ func (pc *PatientController) analysis(ctx *gin.Context) {
 		ctx.Abort()
 		return
 	}
-	var patientService service.PatientService
-	data, err := patientService.GetUserPatientCopyData(claims.Phone)
+	data, err := pc.ps.GetUserPatientCopyData(claims.Phone)
 	if err != nil {
 		tool.Failed(ctx, err)
 		ctx.Abort()
@@ -322,11 +315,8 @@ func (pc *PatientController) track(ctx *gin.Context) {
 			Bill   decimal.Decimal
 		}{Weight: weight, Bill: bill}
 	}
-	var pic util.Picture
-	fp := pic.PickWatermark(patientCopy)
-	fmt.Println(fp)
-	var user service.UserService
-	users, _ := user.GetUsers()
+	fp := pc.pic.PickWatermark(patientCopy)
+	users, _ := pc.user.GetUsers()
 	var min = 20
 	var phone = (*users)[0].Phone
 	for i := 0; i < len(*users); i++ {
@@ -341,11 +331,10 @@ func (pc *PatientController) track(ctx *gin.Context) {
 			phone = (*users)[i].Phone
 		}
 	}
-	var p util.Picture
 	var dis = make(map[string]interface{})
 	dis["distance"] = min
 	dis["phone"] = phone
 	dis["fingerPrint"] = fp
-	dis["picSrc"] = p.PicDecode()
+	dis["picSrc"] = pc.pic.PicDecode()
 	tool.Success(ctx, dis)
 }

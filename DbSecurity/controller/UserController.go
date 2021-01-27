@@ -15,6 +15,10 @@ import (
 )
 
 type UserController struct {
+	us service.UserService
+	bis service.BannedIpService
+	pic util.Picture
+	csvOperation util.CsvOperation
 }
 
 func (uc *UserController) Router(engine *gin.Engine) {
@@ -39,9 +43,7 @@ func (uc *UserController) captcha(ctx *gin.Context) {
 
 //生成盐值
 func (uc *UserController) salt(ctx *gin.Context) {
-	userService := service.UserService{}
-	salt := userService.Salt()
-	tool.Success(ctx, salt)
+	tool.Success(ctx, uc.us.Salt())
 }
 
 //用户注册
@@ -53,8 +55,7 @@ func (uc *UserController) register(ctx *gin.Context) {
 	} else {
 		ip = ctx.Request.Header.Values("Remote_Addr")[0]
 	}
-	var bis service.BannedIpService
-	if bis.IpExist(ip) {
+	if uc.bis.IpExist(ip) {
 		tool.Failed(ctx, "此ip已经被封禁,请联系管理员解封")
 		ctx.Abort()
 		return
@@ -71,8 +72,7 @@ func (uc *UserController) register(ctx *gin.Context) {
 		res, _ := redis.String(conn.Do("hget", "bannedIps", ip))
 		re, _ := strconv.Atoi(res)
 		if re > 2 {
-			var bannedIp service.BannedIpService
-			bannedIp.BanIp(ip)
+			uc.bis.BanIp(ip)
 			tool.Failed(ctx, "你的ip已经被封禁,请联系管理员解封")
 			ctx.Abort()
 			return
@@ -94,8 +94,7 @@ func (uc *UserController) register(ctx *gin.Context) {
 		return
 	}
 	registerParam.Password = string(tool.RSADecrypt(password, "config/ssl.pem"))[6:]
-	us := service.UserService{}
-	_, exist := us.Register(registerParam)
+	_, exist := uc.us.Register(registerParam)
 	if exist == 0 {
 		tool.Success(ctx, "注册成功")
 		return
@@ -128,8 +127,7 @@ func (uc *UserController) login(ctx *gin.Context) {
 	}
 	loginParam.Password = string(tool.RSADecrypt(password, "config/ssl.pem"))[6:]
 	var user *model.User
-	us := service.UserService{}
-	user = us.GetUser(loginParam.Phone)
+	user = uc.us.GetUser(loginParam.Phone)
 	truePwd := user.Password
 	if truePwd == "" {
 		tool.Failed(ctx, "不存在该用户")
@@ -153,17 +151,15 @@ func (uc *UserController) login(ctx *gin.Context) {
 		ctx.Abort()
 		return
 	}
-	var pic = util.Picture{}
-	pic.BlendFP(user.FingerPrint, user.Phone)
-	pic.Arnold(user.Phone, 3)
+	uc.pic.BlendFP(user.FingerPrint, user.Phone)
+	uc.pic.Arnold(user.Phone, 3)
 	_, err = util.EmbedNewPic(user.Phone)
 	if err != nil {
 		tool.Failed(ctx, err)
 		ctx.Abort()
 		return
 	}
-	var csvOperation util.CsvOperation
-	length, err := csvOperation.GenerateCsv(user.Phone)
+	length, err := uc.csvOperation.GenerateCsv(user.Phone)
 	if err != nil {
 		tool.Failed(ctx, err)
 		ctx.Abort()
@@ -201,9 +197,8 @@ func (uc *UserController) revise(ctx *gin.Context) {
 	}
 	reviseParam.NewPassword = string(tool.RSADecrypt(newPwd, "config/ssl.pem"))
 	var user *model.User
-	us := service.UserService{}
 	claims := ctx.MustGet("claims").(*tool.CustomClaims)
-	user = us.GetUser(claims.Phone)
+	user = uc.us.GetUser(claims.Phone)
 	if user.Password == "" {
 		tool.Failed(ctx, "不存在该用户")
 		ctx.Abort()
@@ -214,10 +209,9 @@ func (uc *UserController) revise(ctx *gin.Context) {
 		ctx.Abort()
 		return
 	}
-	var userService service.UserService
-	salt := us.Salt()
+	salt := uc.us.Salt()
 	user.Password = salt + ":" + tool.EncoderSha256(salt+reviseParam.NewPassword)
-	err = userService.RevisePassword(claims.Id, user)
+	err = uc.us.RevisePassword(claims.Id, user)
 	if err != nil {
 		tool.Failed(ctx, err)
 		ctx.Abort()
@@ -290,8 +284,7 @@ func (uc *UserController) freeUser(ctx *gin.Context) {
 
 //获取所有用户数据
 func (uc *UserController) getAllUsers(ctx *gin.Context) {
-	var userService service.UserService
-	users, err := userService.GetUsers()
+	users, err := uc.us.GetUsers()
 	if err != nil {
 		tool.Failed(ctx, err)
 		ctx.Abort()

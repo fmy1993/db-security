@@ -8,6 +8,7 @@ import (
 )
 
 type ImplantIndexController struct {
+	iiss service.ImplantIndexService
 }
 
 func (iis *ImplantIndexController) Router(engine *gin.Engine) {
@@ -21,8 +22,7 @@ func (iis *ImplantIndexController) Router(engine *gin.Engine) {
 
 //获取所有记录
 func (iis *ImplantIndexController) getAllIp(ctx *gin.Context) {
-	var iisService service.ImplantIndexService
-	iiss, err := iisService.GetAllII()
+	iiss, err := iis.iiss.GetAllII()
 	if err != nil {
 		tool.Failed(ctx, err)
 		ctx.Abort()

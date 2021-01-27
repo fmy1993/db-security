@@ -9,21 +9,22 @@ import (
 )
 
 type IpController struct {
+	is service.BannedIpService
 }
 
-func (is *IpController) Router(engine *gin.Engine) {
+func (ic *IpController) Router(engine *gin.Engine) {
 	ipGroup := engine.Group("/api/ip/admin")
 	ipGroup.Use(middleware.JWTAuth())
 	ipGroup.Use(middleware.AdminCheck())
 	{
-		ipGroup.POST("/free", is.freeIp)
-		ipGroup.POST("/ips", is.getAllIp)
-		ipGroup.POST("/add", is.freezeIp)
+		ipGroup.POST("/free", ic.freeIp)
+		ipGroup.POST("/ips", ic.getAllIp)
+		ipGroup.POST("/add", ic.freezeIp)
 	}
 }
 
 //解封ip
-func (is *IpController) freeIp(ctx *gin.Context) {
+func (ic *IpController) freeIp(ctx *gin.Context) {
 	var ip model.BannedIp
 	err := tool.Decode(ctx.Request.Body, &ip)
 	if err != nil {
@@ -31,8 +32,7 @@ func (is *IpController) freeIp(ctx *gin.Context) {
 		ctx.Abort()
 		return
 	}
-	var ipService service.BannedIpService
-	err = ipService.FreeIp(&ip)
+	err = ic.is.FreeIp(&ip)
 	if err != nil {
 		tool.Failed(ctx, err)
 		ctx.Abort()
@@ -42,9 +42,8 @@ func (is *IpController) freeIp(ctx *gin.Context) {
 }
 
 //获取所有被封禁的ip
-func (is *IpController) getAllIp(ctx *gin.Context) {
-	var ipService service.BannedIpService
-	ips, err := ipService.GetAllIp()
+func (ic *IpController) getAllIp(ctx *gin.Context) {
+	ips, err := ic.is.GetAllIp()
 	if err != nil {
 		tool.Failed(ctx, err)
 		ctx.Abort()
@@ -54,8 +53,7 @@ func (is *IpController) getAllIp(ctx *gin.Context) {
 }
 
 //封禁ip
-func (is *IpController) freezeIp(ctx *gin.Context) {
-	var ipService service.BannedIpService
+func (ic *IpController) freezeIp(ctx *gin.Context) {
 	var ip model.BannedIp
 	err := tool.Decode(ctx.Request.Body, &ip)
 	if err != nil {
@@ -63,6 +61,6 @@ func (is *IpController) freezeIp(ctx *gin.Context) {
 		ctx.Abort()
 		return
 	}
-	ipService.BanIp(ip.Ip)
+	ic.is.BanIp(ip.Ip)
 	tool.Success(ctx, "封禁成功")
 }
