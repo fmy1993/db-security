@@ -2,8 +2,72 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6e77c9a4-c634-46cb-b222-55024b3493b4" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DbSecurity/config/engine.json" beforeDir="false" afterPath="$PROJECT_DIR$/DbSecurity/config/engine.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/.idea/DbSecurity.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/.idea/dataSources.local.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/.idea/dataSources.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/.idea/dataSources/c549833a-9135-4278-b543-63915cfe1b88.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/.idea/dataSources/c549833a-9135-4278-b543-63915cfe1b88/storage_v2/_src_/schema/ex.swwAAA.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/.idea/dataSources/c549833a-9135-4278-b543-63915cfe1b88/storage_v2/_src_/schema/information_schema.FNRwLQ.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/attachment/form/patient12312312312.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/attachment/form/patient17356581383.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/attachment/index/index1597639734.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/attachment/oldindex/index1597557773.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/attachment/pickup/res0.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/attachment/pickup/res1.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/attachment/res/res_pic_0.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/attachment/res/res_pic_1.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/attachment/watermark/new_pic12312312312.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/attachment/watermark/new_pic17356581383.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/attachment/watermark/old_pic.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/attachment/watermark/secret_new12312312312.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/attachment/watermark/secret_new17356581383.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/attachment/watermark/secret_old.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/config/engine.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/config/ssl.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/controller/ImplantIndexController.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/controller/IpController.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/controller/PatientController.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/controller/UserController.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/dao/BannedIpDao.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/dao/ImplantIndexDao.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/dao/PatientDao.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/dao/UserDao.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/go.mod" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/go.sum" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/main.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/middleware/AdminCheck.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/middleware/Cors.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/middleware/JwtAuth.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/model/BannedId.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/model/ImplantIndex.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/model/Patient.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/model/User.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/param/AnalysisParam.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/param/LoginParam.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/param/RegisterParam.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/param/ReviseParam.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/service/BannedIpService.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/service/ImplantIndexService.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/service/PatientService.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/service/UserService.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/tool/Captcha.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/tool/CommonResult.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/tool/Config.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/tool/ErrorHandle.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/tool/JsonParse.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/tool/Jwt.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/tool/OrmEngine.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/tool/PasswordDecoder.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/tool/RedisStore.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/util/CsvOperation.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/util/DifferentialPrivacy.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/util/FileOperation.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DbSecurity/util/WatermarkTools.go" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,7 +104,7 @@
     <property name="go.import.settings.migrated" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
     <property name="go.tried.to.enable.integration.vgo.integrator" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/dbsfront" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
     <property name="settings.editor.selected.configurable" value="com.goide.configuration.GoLibrariesConfigurableProvider" />
     <property name="vue.rearranger.settings.migration" value="true" />
