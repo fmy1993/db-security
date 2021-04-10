@@ -8,13 +8,13 @@ import (
 type BannedIpService struct {
 }
 
-//ip是否存在
+// IpExist ip是否存在
 func (bis *BannedIpService) IpExist(ip string) bool {
 	bannedIpDao := dao.NewBannedIpDao()
 	return bannedIpDao.IpIsExist(ip)
 }
 
-//封禁ip
+// BanIp 封禁ip
 func (bis *BannedIpService) BanIp(ip string) {
 	bannedIpDao := dao.NewBannedIpDao()
 	if bannedIpDao.IsIpExist(ip).Id == 0 {
@@ -24,14 +24,14 @@ func (bis *BannedIpService) BanIp(ip string) {
 	}
 }
 
-//解封ip
-func (bis *BannedIpService) FreeIp(ip *model.BannedIp) error {
+// FreeIp 解封ip
+func (bis *BannedIpService) FreeIp(ipId int64) error {
 	bannedIpDao := dao.NewBannedIpDao()
-	return bannedIpDao.DeleteIp(ip)
+	return bannedIpDao.DeleteIp(bannedIpDao.GetIpByIpId(ipId))
 }
 
-//获取所有数据
-func (bis *BannedIpService) GetAllIp()(*[]model.BannedIp, error) {
+// GetAllIp 获取所有数据
+func (bis *BannedIpService) GetAllIp() (*[]model.BannedIp, error) {
 	var ipDao = dao.NewBannedIpDao()
 	return ipDao.QueryAllIp()
 }

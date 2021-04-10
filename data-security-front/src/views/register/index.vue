@@ -182,7 +182,7 @@ export default {
 
   .register-form-button {
     margin-bottom: 0px;
-    margin-top: 30px;
+    margin-top: 29px;
     display: flex;
     justify-content: center;
     align-items: center;

@@ -1,18 +1,18 @@
 package dao
 
 import (
+	"db-security-backend/config"
 	"log"
 
 	"db-security-backend/model"
-	"db-security-backend/tool"
 )
 
 type BannedIpDao struct {
-	*tool.Orm
+	*config.Orm
 }
 
 func NewBannedIpDao() *BannedIpDao {
-	return &BannedIpDao{tool.DbEngine}
+	return &BannedIpDao{config.DbEngine}
 }
 
 func (bid *BannedIpDao) IpIsExist(ip string) bool {
@@ -24,7 +24,7 @@ func (bid *BannedIpDao) IpIsExist(ip string) bool {
 	return exist
 }
 
-//插入ip
+// InsertIp 插入ip
 func (bid *BannedIpDao) InsertIp(ip model.BannedIp) int64 {
 	result, err := bid.InsertOne(&ip)
 	if err != nil {
@@ -34,7 +34,7 @@ func (bid *BannedIpDao) InsertIp(ip model.BannedIp) int64 {
 	return result
 }
 
-//ip是否存在
+// IsIpExist ip是否存在
 func (bid *BannedIpDao) IsIpExist(ip string) *model.BannedIp {
 	var bannedIp model.BannedIp
 	_, err := bid.Where("ip = ?", ip).Get(&bannedIp)
@@ -44,7 +44,7 @@ func (bid *BannedIpDao) IsIpExist(ip string) *model.BannedIp {
 	return &bannedIp
 }
 
-//删除ip
+// DeleteIp 删除ip
 func (bid *BannedIpDao) DeleteIp(ip *model.BannedIp) error {
 	_, err := bid.ID(ip.Id).Delete(ip)
 	if err != nil {
@@ -53,7 +53,7 @@ func (bid *BannedIpDao) DeleteIp(ip *model.BannedIp) error {
 	return nil
 }
 
-//获取所有数据
+// QueryAllIp 获取所有数据
 func (bid *BannedIpDao) QueryAllIp() (*[]model.BannedIp, error) {
 	var ip []model.BannedIp
 	err := bid.Find(&ip)
@@ -61,4 +61,14 @@ func (bid *BannedIpDao) QueryAllIp() (*[]model.BannedIp, error) {
 		return nil, err
 	}
 	return &ip, nil
+}
+
+// GetIpByIpId 根据ipId获取ip
+func (bid *BannedIpDao) GetIpByIpId(ipId int64) *model.BannedIp {
+	var ip = model.BannedIp{}
+	_, err := bid.Where("id = ?", ipId).Get(&ip)
+	if err != nil {
+		return nil
+	}
+	return &ip
 }

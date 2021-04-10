@@ -4,8 +4,9 @@ import (
 	"db-security-backend/middleware"
 	"db-security-backend/model"
 	"db-security-backend/service"
-	"db-security-backend/tool"
+	"db-security-backend/util"
 	"github.com/gin-gonic/gin"
+	"strconv"
 )
 
 type IpController struct {
@@ -13,54 +14,43 @@ type IpController struct {
 }
 
 func (ic *IpController) Router(engine *gin.Engine) {
-	ipGroup := engine.Group("/api/ip/admin")
-	ipGroup.Use(middleware.JWTAuth())
-	ipGroup.Use(middleware.AdminCheck())
-	{
-		ipGroup.POST("/free", ic.freeIp)
-		ipGroup.POST("/ips", ic.getAllIp)
-		ipGroup.POST("/add", ic.freezeIp)
-	}
+	engine.DELETE("/free_ip/:ipId", middleware.JWTAuth(), middleware.AdminCheck(), ic.freeIp)
+	engine.GET("/all_ip", middleware.JWTAuth(), middleware.AdminCheck(), ic.getAllIp)
+	engine.POST("/freeze_ip", middleware.JWTAuth(), middleware.AdminCheck(), ic.freezeIp)
 }
 
 //解封ip
 func (ic *IpController) freeIp(ctx *gin.Context) {
-	var ip model.BannedIp
-	err := tool.Decode(ctx.Request.Body, &ip)
+	ipId, _ := strconv.Atoi(ctx.Param("ipId"))
+	err := ic.is.FreeIp(int64(ipId))
 	if err != nil {
-		tool.Failed(ctx, err)
+		util.Failed(ctx, err)
 		ctx.Abort()
 		return
 	}
-	err = ic.is.FreeIp(&ip)
-	if err != nil {
-		tool.Failed(ctx, err)
-		ctx.Abort()
-		return
-	}
-	tool.Success(ctx, "解封成功")
+	util.Success(ctx, "解封成功")
 }
 
 //获取所有被封禁的ip
 func (ic *IpController) getAllIp(ctx *gin.Context) {
 	ips, err := ic.is.GetAllIp()
 	if err != nil {
-		tool.Failed(ctx, err)
+		util.Failed(ctx, err)
 		ctx.Abort()
 		return
 	}
-	tool.Success(ctx, ips)
+	util.Success(ctx, ips)
 }
 
 //封禁ip
 func (ic *IpController) freezeIp(ctx *gin.Context) {
 	var ip model.BannedIp
-	err := tool.Decode(ctx.Request.Body, &ip)
+	err := util.Decode(ctx.Request.Body, &ip)
 	if err != nil {
-		tool.Failed(ctx, err)
+		util.Failed(ctx, err)
 		ctx.Abort()
 		return
 	}
 	ic.is.BanIp(ip.Ip)
-	tool.Success(ctx, "封禁成功")
+	util.Success(ctx, "封禁成功")
 }

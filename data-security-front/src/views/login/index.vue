@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { getSalt, login, getCaptcha } from '@/api/user'
+import { getSalt, login, getCaptcha, getUserInfo } from '@/api/user'
 import { getRsa, getHash } from '@/util/tools'
 
 export default {
@@ -43,9 +43,9 @@ export default {
       base64Img: '',
       captchaId: '',
       loginForm: {
-        phone: '',
-        password: '',
-        captcha: ''
+        phone: '17356581383',
+        password: '123',
+        captcha: '1233'
       },
       fullscreenLoading: false,
       csrfToken: '',
@@ -93,9 +93,6 @@ export default {
         .then(response => {
           this.salt = response.data.payload
         })
-        .catch(err => {
-          console.log(err)
-        })
     },
     async onSubmit (formName) {
       this.$refs[formName].validate(async (valid) => {
@@ -120,23 +117,14 @@ export default {
                 this.fullscreenLoading = false
                 this.onCaptcha()
               } else {
-                localStorage.setItem('total', response.data.payload.total)
                 localStorage.setItem('Authorization', response.data.payload.token)
-                localStorage.setItem('X_CSRF_Token', response.data.payload.csrfToken)
                 this.fullscreenLoading = false
                 this.$message({
                   message: '恭喜你，登录成功',
                   type: 'success'
                 })
-                if (response.data.payload.admin === 1) {
-                  this.$router.push('/admin-home')
-                } else {
-                  this.$router.push('/user-home')
-                }
+                this.onGetUserInfo()
               }
-            })
-            .catch((error) => {
-              console.log(error)
             })
         } else {
           return false
@@ -149,9 +137,6 @@ export default {
           this.base64Img = response.data.payload.data
           this.captchaId = response.data.payload.captchaId
         })
-        .catch(error => {
-          console.log(error)
-        })
     },
     resetForm (formName) {
       this.$refs[formName].resetFields()
@@ -161,6 +146,17 @@ export default {
       setTimeout(() => {
         this.fullscreenLoading = false
       }, 20000)
+    },
+    async onGetUserInfo () {
+      await getUserInfo()
+        .then(res => {
+          localStorage.setItem('user', JSON.stringify(res.data.payload))
+          if (res.data.payload.is_super_user === 1) {
+            this.$router.push('/admin-home')
+          } else {
+            this.$router.push('/home')
+          }
+        })
     }
   }
 }

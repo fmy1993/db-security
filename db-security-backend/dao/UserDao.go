@@ -1,21 +1,21 @@
 package dao
 
 import (
+	"db-security-backend/config"
 	"log"
 
 	"db-security-backend/model"
-	"db-security-backend/tool"
 )
 
 type UserDao struct {
-	*tool.Orm
+	*config.Orm
 }
 
 func NewUserDao() *UserDao {
-	return &UserDao{tool.DbEngine}
+	return &UserDao{config.DbEngine}
 }
 
-//根据用户号查询用户
+// QueryUserByPhone 根据手机号查询用户
 func (ud *UserDao) QueryUserByPhone(phone string) *model.User {
 	var user model.User
 	if _, err := ud.Where("phone = ?", phone).Get(&user); err != nil {
@@ -24,7 +24,7 @@ func (ud *UserDao) QueryUserByPhone(phone string) *model.User {
 	return &user
 }
 
-//插入用户
+// InsertUser 插入用户
 func (ud *UserDao) InsertUser(user model.User) int64 {
 	result, err := ud.InsertOne(&user)
 	if err != nil {
@@ -34,7 +34,7 @@ func (ud *UserDao) InsertUser(user model.User) int64 {
 	return result
 }
 
-//检查指纹是否已经存在
+// IsFingerPrintExist 检查指纹是否已经存在
 func (ud *UserDao) IsFingerPrintExist(fingerPrint string) *model.User {
 	var user model.User
 	_, err := ud.Where("finger_print = ?", fingerPrint).Get(&user)
@@ -44,7 +44,7 @@ func (ud *UserDao) IsFingerPrintExist(fingerPrint string) *model.User {
 	return &user
 }
 
-//修改密码
+// RevisePwd 修改密码
 func (ud *UserDao) RevisePwd(id int64, user *model.User) error {
 	_, err := ud.Exec("update user set password = ? where id = ?", user.Password, id)
 	if err != nil {
@@ -53,7 +53,7 @@ func (ud *UserDao) RevisePwd(id int64, user *model.User) error {
 	return nil
 }
 
-//获取所有用户
+// QueryAllUser 获取所有用户
 func (ud *UserDao) QueryAllUser() (*[]model.User, error) {
 	var users []model.User
 	err := ud.Find(&users)

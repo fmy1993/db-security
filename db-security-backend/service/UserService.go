@@ -1,6 +1,8 @@
 package service
 
 import (
+	"db-security-backend/param/userParam"
+	"db-security-backend/util"
 	"math"
 	"math/rand"
 	"strconv"
@@ -8,14 +10,12 @@ import (
 
 	"db-security-backend/dao"
 	"db-security-backend/model"
-	"db-security-backend/param"
-	"db-security-backend/tool"
 )
 
 type UserService struct {
 }
 
-//获取盐值
+// Salt 获取盐值
 func (us *UserService) Salt() string {
 	chars := "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789"
 	bytes := []byte(chars)
@@ -26,19 +26,18 @@ func (us *UserService) Salt() string {
 	return string(salt)
 }
 
-//注册用户
-func (us *UserService) Register(registerParam param.RegisterParam) (*model.User, int64) {
+// Register 注册用户
+func (us *UserService) Register(registerParam userParam.RegisterParam) (*model.User, int64) {
 	userDao := dao.NewUserDao()
 	user := userDao.QueryUserByPhone(registerParam.Phone)
 	if user.Id != 0 {
 		return user, user.Id
 	} else {
 		user := model.User{}
-		var us UserService
 		salt := us.Salt()
 		user.Phone = registerParam.Phone
-		user.Password = salt + ":" + tool.EncoderSha256(salt+registerParam.Password)
-		user.DateJoined = time.Now().Unix()
+		user.Password = salt + ":" + util.EncoderSha256(salt+registerParam.Password)
+		user.DateJoined = time.Now().Format("2006-01-02 15:04:05")
 		user.FingerPrint = us.getFingerPrint(registerParam.Phone)
 		user.IsSuperUser = 0
 		user.Id = userDao.InsertUser(user)
@@ -46,7 +45,7 @@ func (us *UserService) Register(registerParam param.RegisterParam) (*model.User,
 	}
 }
 
-//生成指纹
+// 生成指纹
 func (us *UserService) getFingerPrint(phone string) string {
 	fingerPrint := ""
 	for {
@@ -80,7 +79,7 @@ func (us *UserService) getFingerPrint(phone string) string {
 	return fingerPrint
 }
 
-//根据用户名查询用户
+// GetUser 根据手机号查询用户
 func (us *UserService) GetUser(phone string) *model.User {
 	userDao := dao.NewUserDao()
 	var user *model.User
@@ -88,7 +87,28 @@ func (us *UserService) GetUser(phone string) *model.User {
 	return user
 }
 
-//修改密码
+// GetUsersByFingerprint 根据fingerPrint查询相关用户
+func (us *UserService) GetUsersByFingerprint(fingerprint string) (*model.User, int) {
+	var userDao = dao.NewUserDao()
+	users, _ := userDao.QueryAllUser()
+	var min = 20
+	var user model.User
+	for i := range *users {
+		var count = 0
+		for j := 0; j < 20; j++ {
+			if (*users)[i].FingerPrint[j] != fingerprint[j] {
+				count++
+			}
+		}
+		if count < min {
+			min = count
+			user = (*users)[i]
+		}
+	}
+	return &user, min
+}
+
+// RevisePassword 修改密码
 func (us *UserService) RevisePassword(id int64, user *model.User) error {
 	userDao := dao.NewUserDao()
 	err := userDao.RevisePwd(id, user)
@@ -98,9 +118,8 @@ func (us *UserService) RevisePassword(id int64, user *model.User) error {
 	return nil
 }
 
-//得到user表的所有数据
+// GetUsers 得到user表的所有数据
 func (us *UserService) GetUsers() (*[]model.User, error) {
 	var userDao = dao.NewUserDao()
 	return userDao.QueryAllUser()
 }
-

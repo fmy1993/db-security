@@ -6,13 +6,8 @@ const request = axios.create({
 
 request.interceptors.request.use(
   config => {
-    if (localStorage.getItem('X_CSRF_Token')) {
-      config.headers = {
-        'X-CSRFToken': localStorage.getItem('X_CSRF_Token')
-      }
-      if (localStorage.getItem('Authorization')) {
-        config.headers.Authorization = localStorage.getItem('Authorization')
-      }
+    if (localStorage.getItem('Authorization')) {
+      config.headers.Authorization = localStorage.getItem('Authorization')
     }
     return config
   },

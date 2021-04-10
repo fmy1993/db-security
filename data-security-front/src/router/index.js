@@ -20,63 +20,53 @@ const routes = [
     component: () => import('@/views/register/index')
   },
   {
-    path: '/user-home',
+    path: '/home',
     name: 'UserHome',
-    component: () => import('@/views/user/home/index'),
-    redirect: '/user-home/patient',
+    component: () => import('@/views/userhome'),
+    redirect: '/user-home/staff',
     children: [
       {
-        path: '/user-home/patient',
-        name: 'Patient',
-        component: () => import('@/views/user/home/component/patient')
-      },
-      {
-        path: '/user-home/revise',
-        name: 'Revise',
-        component: () => import('@/views/user/home/component/revise')
+        path: '/user-home/staff',
+        name: 'Staff',
+        component: () => import('@/views/staff/index')
       },
       {
         path: '/user-home/visualization',
         name: 'Visualization',
-        component: () => import('@/views/user/home/component/visualization')
+        component: () => import('@/views/userhome/component/visualization')
       }
     ]
   },
   {
     path: '/admin-home',
     name: 'AdminHome',
-    component: () => import('@/views/admin/index'),
-    redirect: '/admin-home/patient',
+    component: () => import('@/views/adminhome/index'),
+    redirect: '/admin-home/staff',
     children: [
       {
-        path: '/admin-home/patient',
-        name: 'AdminPatient',
-        component: () => import('@/views/admin/component/patient')
+        path: '/admin-home/staff',
+        name: 'AdminStaff',
+        component: () => import('@/views/adminhome/component/staff')
       },
       {
         path: '/admin-home/revise',
         name: 'Revise',
-        component: () => import('@/views/user/home/component/revise')
+        component: () => import('@/views/userhome/component/revise')
       },
       {
         path: '/admin-home/user',
         name: 'User',
-        component: () => import('@/views/admin/component/user')
+        component: () => import('@/views/adminhome/component/user')
       },
       {
         path: '/admin-home/ip',
         name: 'Ip',
-        component: () => import('@/views/admin/component/ip')
-      },
-      {
-        path: '/admin-home/implant',
-        name: 'Implant',
-        component: () => import('@/views/admin/component/implant')
+        component: () => import('@/views/adminhome/component/ip')
       },
       {
         path: '/admin-home/track',
         name: 'Track',
-        component: () => import('@/views/admin/component/track')
+        component: () => import('@/views/adminhome/component/track')
       }
     ]
   }

@@ -6,5 +6,5 @@ type User struct {
 	Password    string `xorm:"varchar(255)" json:"password"`
 	FingerPrint string `xorm:"varchar(20)" json:"finger_print"`
 	IsSuperUser int8   `xorm:"tinyint" json:"is_super_user"`
-	DateJoined  int64  `xorm:"bigint" json:"date_joined"`
+	DateJoined  string  `xorm:"bigint" json:"date_joined"`
 }
