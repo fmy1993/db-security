@@ -102,9 +102,9 @@ func GenerateToken(user *model.User) string {
 		Phone:   user.Phone,
 		IsAdmin: user.IsSuperUser,
 		StandardClaims: jwt.StandardClaims{
-			NotBefore: time.Now().Unix() - 1000, // 签名生效时间
+			NotBefore: time.Now().Unix() - 1000,  // 签名生效时间
 			ExpiresAt: time.Now().Unix() + 36000, // 过期时间十小时
-			Issuer:    "kale",                   //签名发行者
+			Issuer:    "kale",                    //签名发行者
 		},
 	}
 	token, err := j.CreateToken(claims)

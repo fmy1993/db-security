@@ -2,104 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2a9e7211-8fb8-4c56-8590-b7d406b26ae9" name="默认的" comment="默认的">
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/2c435b22-fef2-4e9c-b7bb-19d669ba3905/storage_v2/_src_/schema/mysql.osA4Bg.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/2c435b22-fef2-4e9c-b7bb-19d669ba3905/storage_v2/_src_/schema/performance_schema.kIw0nw.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/attachment/form/staff12312312312.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/attachment/form/staff17356581383.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/attachment/watermark/old_pic.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/controller/StaffController.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dao/ConfigDao.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dao/StaffCopyDao.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dao/StaffDao.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/model/Config.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/model/Staff.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/param/staffParam/SelectStaffParam.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/service/CsvService.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/service/DifferentialPrivacyService.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/service/StaffCopyService.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/service/StaffService.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/service/WaterMarkService.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/demo_test.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/util/Trans.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/dbSecurity.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/httpRequests/http-requests-log.http" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/workspace.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../data-security-front/src/api/admin.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../data-security-front/src/api/patient.js" beforeDir="false" afterPath="$PROJECT_DIR$/../data-security-front/src/api/staff.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../data-security-front/src/api/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/../data-security-front/src/api/user.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../data-security-front/src/router/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../data-security-front/src/router/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../data-security-front/src/util/request.js" beforeDir="false" afterPath="$PROJECT_DIR$/../data-security-front/src/util/request.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../data-security-front/src/views/admin/component/implant.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../data-security-front/src/views/admin/component/ip.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../data-security-front/src/views/adminhome/component/ip.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../data-security-front/src/views/admin/component/patient.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../data-security-front/src/views/admin/component/track.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../data-security-front/src/views/adminhome/component/track.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../data-security-front/src/views/admin/component/user.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../data-security-front/src/views/adminhome/component/user.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../data-security-front/src/views/admin/index.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../data-security-front/src/views/login/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../data-security-front/src/views/login/index.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../data-security-front/src/views/register/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../data-security-front/src/views/register/index.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../data-security-front/src/views/user/home/component/patient.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../data-security-front/src/views/user/home/component/revise.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../data-security-front/src/views/userhome/component/revise.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../data-security-front/src/views/user/home/component/visualization.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../data-security-front/src/views/userhome/component/visualization.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../data-security-front/src/views/user/home/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../data-security-front/src/views/userhome/index.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../data-security-front/vue.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/../data-security-front/vue.config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/2c435b22-fef2-4e9c-b7bb-19d669ba3905.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/2c435b22-fef2-4e9c-b7bb-19d669ba3905.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/attachment/form/patient12312312312.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/attachment/form/patient17356581383.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/attachment/index/index1597639734.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/attachment/oldindex/index1597557773.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/attachment/pickup/res0.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/attachment/pickup/res0.bmp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/attachment/pickup/res1.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/attachment/res/res_pic_0.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/attachment/res/res_pic_0.bmp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/attachment/res/res_pic_1.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/attachment/watermark/new_pic12312312312.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/attachment/watermark/new_pic12312312312.bmp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/attachment/watermark/new_pic17356581383.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/attachment/watermark/new_pic17356581383.bmp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/attachment/watermark/old_pic.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/attachment/watermark/secret_new12312312312.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/attachment/watermark/secret_new12312312312.bmp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/attachment/watermark/secret_new17356581383.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/attachment/watermark/secret_new17356581383.bmp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/attachment/watermark/secret_old.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/controller/ImplantIndexController.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/controller/IpController.go" beforeDir="false" afterPath="$PROJECT_DIR$/controller/IpController.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controller/PatientController.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/controller/UserController.go" beforeDir="false" afterPath="$PROJECT_DIR$/controller/UserController.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dao/BannedIpDao.go" beforeDir="false" afterPath="$PROJECT_DIR$/dao/BannedIpDao.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dao/ImplantIndexDao.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dao/PatientDao.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dao/UserDao.go" beforeDir="false" afterPath="$PROJECT_DIR$/dao/UserDao.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/middleware/AdminCheck.go" beforeDir="false" afterPath="$PROJECT_DIR$/middleware/AdminCheck.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/middleware/Cors.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/middleware/JwtAuth.go" beforeDir="false" afterPath="$PROJECT_DIR$/middleware/JwtAuth.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model/BannedId.go" beforeDir="false" afterPath="$PROJECT_DIR$/model/BannedId.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model/ImplantIndex.go" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/model/User.go" beforeDir="false" afterPath="$PROJECT_DIR$/model/User.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/param/AnalysisParam.go" beforeDir="false" afterPath="$PROJECT_DIR$/param/AnalysisParam.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/param/LoginParam.go" beforeDir="false" afterPath="$PROJECT_DIR$/param/userParam/LoginParam.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/param/RegisterParam.go" beforeDir="false" afterPath="$PROJECT_DIR$/param/userParam/RegisterParam.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/param/ReviseParam.go" beforeDir="false" afterPath="$PROJECT_DIR$/param/userParam/ReviseParam.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/BannedIpService.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/BannedIpService.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/ImplantIndexService.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/PatientService.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/UserService.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/UserService.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tool/Captcha.go" beforeDir="false" afterPath="$PROJECT_DIR$/util/Captcha.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tool/CommonResult.go" beforeDir="false" afterPath="$PROJECT_DIR$/util/CommonResult.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tool/Config.go" beforeDir="false" afterPath="$PROJECT_DIR$/config/Config.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tool/ErrorHandle.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tool/JsonParse.go" beforeDir="false" afterPath="$PROJECT_DIR$/util/JsonParse.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tool/Jwt.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/JwtService.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tool/OrmEngine.go" beforeDir="false" afterPath="$PROJECT_DIR$/config/OrmEngine.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tool/PasswordDecoder.go" beforeDir="false" afterPath="$PROJECT_DIR$/util/PasswordDecoder.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tool/RedisStore.go" beforeDir="false" afterPath="$PROJECT_DIR$/util/RedisStore.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/util/CsvOperation.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/util/DifferentialPrivacy.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/util/FileOperation.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/util/WatermarkTools.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/JwtService.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/JwtService.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
