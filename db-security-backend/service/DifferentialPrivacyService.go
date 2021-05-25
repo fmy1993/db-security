@@ -8,19 +8,25 @@ import (
 	"log"
 	"math"
 	"math/rand"
+	"strconv"
 	"time"
 )
 
 type DifferentialPrivacyService struct {
 	ss  StaffService
 	scs StaffCopyService
+	cs  ConfigService
 }
 
 // DifferentialPrivacy 进行差分隐私
 func (dps *DifferentialPrivacyService) DifferentialPrivacy() {
 	maxSalary, minSalary := dps.getMaxAndMin()
 	sensitivitySalary := maxSalary.Sub(minSalary)
-	epsilonSalary := decimal.NewFromInt(100)
+	float, err := strconv.ParseFloat(dps.cs.GetConfigValueByKey("laplace_key"), 64)
+	if err != nil {
+		return
+	}
+	epsilonSalary := decimal.NewFromFloat(float)
 	var staffCopyDao = dao.NewStaffCopyDao()
 	staffCopyDao.IsStaffCopyExist()
 	dps.laplace(sensitivitySalary, epsilonSalary, staffCopyDao.GetAllStaffCopy())
@@ -94,7 +100,7 @@ func (dps *DifferentialPrivacyService) laplace(sensitivity decimal.Decimal, epsi
 
 // 获取满足laplace分布的噪音
 func (dps *DifferentialPrivacyService) getNoise(sensitivity decimal.Decimal, epsilon decimal.Decimal) decimal.Decimal {
-	rand.Seed(time.Now().Unix())
+	rand.Seed(time.Now().UnixNano())
 	beta := sensitivity.Div(epsilon).Round(3)
 	u1 := rand.Float64()
 	u2 := rand.Float64()
@@ -102,7 +108,7 @@ func (dps *DifferentialPrivacyService) getNoise(sensitivity decimal.Decimal, eps
 	if u1 < 0.5 {
 		noise = beta.Neg().Mul(decimal.NewFromFloat(math.Log(1 - u2))).Round(1)
 	} else {
-		noise = beta.Mul(decimal.NewFromFloat(u2)).Round(1)
+		noise = beta.Mul(decimal.NewFromFloat(math.Log(u2))).Round(1)
 	}
 	return noise
 }

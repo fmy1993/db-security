@@ -108,6 +108,23 @@ func (us *UserService) GetUsersByFingerprint(fingerprint string) (*model.User, i
 	return &user, min
 }
 
+// GetUsersByFingerprint2 根据fingerPrint查询相关用户
+func (us *UserService) GetUsersByFingerprint2(fingerprint string) map[string]int {
+	var userDao = dao.NewUserDao()
+	users, _ := userDao.QueryAllUser()
+	var res = make(map[string]int)
+	for i := range *users {
+		var count = 0
+		for j := 0; j < 20; j++ {
+			if (*users)[i].FingerPrint[j] != fingerprint[j] {
+				count++
+			}
+		}
+		res[(*users)[i].Phone] = count
+	}
+	return res
+}
+
 // RevisePassword 修改密码
 func (us *UserService) RevisePassword(id int64, user *model.User) error {
 	userDao := dao.NewUserDao()

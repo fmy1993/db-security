@@ -24,7 +24,9 @@ type Img interface {
 }
 
 type WaterMarkService struct {
-	ss StaffService
+	ss  StaffService
+	scs StaffCopyService
+	cs  ConfigService
 }
 
 // EmbedWatermarkToData 根据数据字典对数据进行更新
@@ -93,7 +95,7 @@ func (wms *WaterMarkService) PickWatermarkByCsv(staffCopys map[int64]decimal.Dec
 			wm = append(wm, 255)
 			continue
 		}
-		tmp = staffCopys[(*tuples)[i]].Mod(decimal.NewFromInt(2))
+		tmp = staffCopys[(*tuples)[i]].Abs().Mod(decimal.NewFromInt(2))
 		if tmp.Equal(decimal.NewFromInt(1)) {
 			wm = append(wm, 255)
 		} else {
@@ -118,7 +120,11 @@ func (wms *WaterMarkService) PickWatermarkByCsv(staffCopys map[int64]decimal.Dec
 		imgMat.Close()
 		demo.Close()
 	}
-	wms.DeArnold(3)
+	atoi, err := strconv.Atoi(wms.cs.GetConfigValueByKey("arnold_key"))
+	if err != nil {
+		return
+	}
+	wms.DeArnold(atoi)
 }
 
 // PickFingerPrintByPic 根据提取到的水印图片提取指纹
@@ -169,6 +175,133 @@ func (wms *WaterMarkService) PickFingerPrintByPic() string {
 	}
 	return finalFp
 }
+
+//// Arnold Arnold变换
+//func (wms *WaterMarkService) Arnold(phone string, key int) {
+//	cfg := config.GetConfig()
+//	var imgMat gocv.Mat
+//	if phone == "" {
+//		imgMat = gocv.IMRead(cfg.Path.Watermark+"old_pic.png", gocv.IMReadUnchanged)
+//	} else {
+//		imgMat = gocv.IMRead(cfg.Path.Watermark+"new_pic"+phone+".bmp", gocv.IMReadUnchanged)
+//	}
+//	defer imgMat.Close()
+//	img, err := imgMat.ToImage()
+//	if err != nil {
+//		log.Fatal(err.Error())
+//		return
+//	}
+//	var preKey []int
+//	for i := 0; i < 2; i++ {
+//		r, _, _, _ := img.At(i, 0).RGBA()
+//		if r == uint32(65535) {
+//			preKey = append(preKey, 255)
+//		} else {
+//			preKey = append(preKey, 0)
+//		}
+//	}
+//	var baseKey = int(util.PixelToInt(preKey))
+//	tempMat := gocv.NewMatWithSize(imgMat.Rows(), imgMat.Cols(), gocv.MatTypeCV8UC3)
+//	tempImg, _ := tempMat.ToImage()
+//	for k := 0; k < key+baseKey; k++ {
+//		for i := 0; i < imgMat.Rows(); i++ {
+//			for j := 0; j < imgMat.Cols(); j++ {
+//				tempImg.(Img).Set((i+j)%imgMat.Rows(), (i+2*j)%imgMat.Rows(), img.At(i, j))
+//			}
+//		}
+//		for i := 0; i < imgMat.Rows(); i++ {
+//			for j := 0; j < imgMat.Cols(); j++ {
+//				img.(Img).Set(i, j, tempImg.At(i, j))
+//			}
+//		}
+//	}
+//	for i := 0; i < 100; i++ {
+//		if preKey[i%2] == 255 {
+//			img.(Img).Set(i, 0, color.RGBA{
+//				R: uint8(255),
+//				G: uint8(255),
+//				B: uint8(255),
+//				A: uint8(255),
+//			})
+//		} else {
+//			img.(Img).Set(i, 0, color.RGBA{
+//				R: uint8(0),
+//				G: uint8(0),
+//				B: uint8(0),
+//				A: uint8(0),
+//			})
+//		}
+//	}
+//	demo, err := gocv.ImageToMatRGB(img)
+//	if err != nil {
+//		log.Fatal(err.Error())
+//		return
+//	}
+//	defer demo.Close()
+//	if phone == "" {
+//		gocv.IMWrite(cfg.Path.Watermark+"secret_old.bmp", demo)
+//	} else {
+//		gocv.IMWrite(cfg.Path.Watermark+"secret_new"+phone+".bmp", demo)
+//	}
+//}
+//
+//// DeArnold 逆Arnold变换
+//func (wms *WaterMarkService) DeArnold(key int) {
+//	var cfg = config.GetConfig()
+//	files, _ := ioutil.ReadDir(cfg.Path.PickUp)
+//	for count := 0; count < len(files); count++ {
+//		imgMat := gocv.IMRead(cfg.Path.PickUp+"res"+strconv.Itoa(count)+".bmp", gocv.IMReadUnchanged)
+//		img, err := imgMat.ToImage()
+//		if err != nil {
+//			log.Fatal(err.Error())
+//			return
+//		}
+//		var preKey []int
+//		for i := 0; i < 100; i++ {
+//			r, _, _, _ := img.At(i, 0).RGBA()
+//			if r == uint32(65535) {
+//				preKey = append(preKey, 255)
+//			} else {
+//				preKey = append(preKey, 0)
+//			}
+//		}
+//		preKey = util.MajorityVoting(preKey, 2)
+//		var baseKey = int(util.PixelToInt(preKey))
+//		tempMat := gocv.NewMatWithSize(imgMat.Rows(), imgMat.Cols(), gocv.MatTypeCV8UC3)
+//		tempImg, _ := tempMat.ToImage()
+//		for k := 0; k < key+baseKey; k++ {
+//			for i := 0; i < imgMat.Rows(); i++ {
+//				for j := 0; j < imgMat.Cols(); j++ {
+//					var tempI, tempJ int
+//					if 2*i-j < 0 {
+//						tempI = imgMat.Rows() + (2*i - j)
+//					} else {
+//						tempI = (2*i - j) % imgMat.Rows()
+//					}
+//					if j-i < 0 {
+//						tempJ = imgMat.Rows() + j - i
+//					} else {
+//						tempJ = (j - i) % imgMat.Rows()
+//					}
+//					tempImg.(Img).Set(tempI, tempJ, img.At(i, j))
+//				}
+//			}
+//			for i := 0; i < imgMat.Rows(); i++ {
+//				for j := 0; j < imgMat.Cols(); j++ {
+//					img.(Img).Set(i, j, tempImg.At(i, j))
+//				}
+//			}
+//		}
+//		demo, err := gocv.ImageToMatRGB(img)
+//		if err != nil {
+//			log.Fatal(err.Error())
+//			return
+//		}
+//		gocv.IMWrite(cfg.Path.Res+"res_pic_"+strconv.Itoa(count)+".bmp", demo)
+//		imgMat.Close()
+//		demo.Close()
+//	}
+//}
 
 // Arnold Arnold变换
 func (wms *WaterMarkService) Arnold(phone string, key int) {
@@ -331,9 +464,8 @@ func (wms *WaterMarkService) getUpdateDataMap(phone string) (map[int64]model.Sta
 	if err != nil {
 		return nil, err
 	}
-	var staffCopyService StaffCopyService
-	staffCopyService.IsUserStaffCopyExist(phone)
-	staffCopys, _ := staffCopyService.GetAllStaffCopyData()
+	wms.scs.IsUserStaffCopyExist(phone)
+	staffCopys, _ := wms.scs.GetAllStaffCopyData()
 	var staffCopysLength = len(*staffCopys)
 	var staffCopysMap = make(map[int64]model.StaffCopy, staffCopysLength)
 	for i := 0; i < staffCopysLength; i++ {

@@ -67,6 +67,11 @@ const routes = [
         path: '/admin-home/track',
         name: 'Track',
         component: () => import('@/views/adminhome/component/track')
+      },
+      {
+        path: '/admin-home/record',
+        name: 'Record',
+        component: () => import('@/views/adminhome/component/record')
       }
     ]
   }

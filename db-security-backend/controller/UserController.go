@@ -19,6 +19,7 @@ type UserController struct {
 	bis service.BannedIpService
 	cs  service.CsvService
 	wms service.WaterMarkService
+	cfs service.ConfigService
 }
 
 func (uc *UserController) Router(engine *gin.Engine) {
@@ -176,7 +177,11 @@ func (uc *UserController) login(ctx *gin.Context) {
 	}
 	// 身份校验成功
 	uc.wms.BlendFingerPrintToPic(user.FingerPrint, user.Phone)
-	uc.wms.Arnold(user.Phone, 3)
+	atoi, err := strconv.Atoi(uc.cfs.GetConfigValueByKey("arnold_key"))
+	if err != nil {
+		return
+	}
+	uc.wms.Arnold(user.Phone, atoi)
 	err = uc.wms.EmbedWatermarkToData(user.Phone)
 	if err != nil {
 		util.Failed(ctx, err)

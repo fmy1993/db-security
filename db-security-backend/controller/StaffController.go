@@ -22,6 +22,8 @@ type StaffController struct {
 	us  service.UserService
 	scs service.StaffCopyService
 	ss  service.StaffService
+	cs  service.ConfigService
+	drs service.DownloadRecordService
 }
 
 func (sc *StaffController) Router(engine *gin.Engine) {
@@ -31,16 +33,22 @@ func (sc *StaffController) Router(engine *gin.Engine) {
 	engine.POST("/staff", middleware.JWTAuth(), sc.getStaffCopysData)
 	engine.POST("/analysis", middleware.JWTAuth(), sc.analysis)
 	engine.POST("/track", middleware.JWTAuth(), middleware.AdminCheck(), sc.track)
+	engine.POST("/track2", sc.track2)
 	engine.POST("/ori_staff", middleware.JWTAuth(), middleware.AdminCheck(), sc.getStaffsData)
 	engine.POST("/add_staff", middleware.JWTAuth(), middleware.AdminCheck(), sc.addStaff)
 	engine.DELETE("/staff/:staffId", middleware.JWTAuth(), middleware.AdminCheck(), sc.deleteStaff)
 	engine.PUT("/staff/:staffId", middleware.JWTAuth(), middleware.AdminCheck(), sc.updateStaff)
-	engine.POST("/dp", middleware.JWTAuth(), middleware.AdminCheck(), sc.differentialPrivacy)
+	// engine.POST("/dp", middleware.JWTAuth(), middleware.AdminCheck(), sc.differentialPrivacy)
+	engine.POST("/dp", sc.differentialPrivacy)
 }
 
 // 获取通过指数机制扰动过的身份证号地区
 func (sc *StaffController) getMostIdCard(ctx *gin.Context) {
-	util.Success(ctx, sc.dps.ExpMechanism(decimal.NewFromInt(1)))
+	atoi, err := strconv.ParseFloat(sc.cs.GetConfigValueByKey("exp_mechanism"), 64)
+	if err != nil {
+		return
+	}
+	util.Success(ctx, sc.dps.ExpMechanism(decimal.NewFromFloat(atoi)))
 }
 
 // 对原始数据通过laplace机制添加噪音
@@ -81,10 +89,37 @@ func (sc *StaffController) track(ctx *gin.Context) {
 	util.Success(ctx, res)
 }
 
+// 盗版追踪
+func (sc *StaffController) track2(ctx *gin.Context) {
+	file, _ := ctx.FormFile("file")
+	fs, _ := file.Open()
+	c := csv.NewReader(fs)
+	var staffCopy = make(map[int64]decimal.Decimal)
+	for {
+		row, err := c.Read()
+		if err != nil && err != io.EOF {
+			util.Failed(ctx, "文件有误")
+			ctx.Abort()
+			return
+		}
+		if err == io.EOF {
+			break
+		}
+		salary, _ := decimal.NewFromString(row[4])
+		tmp, _ := strconv.Atoi(row[0])
+		staffCopy[int64(tmp)] = salary
+	}
+	sc.wms.PickWatermarkByCsv(staffCopy)
+	fingerPrint := sc.wms.PickFingerPrintByPic()
+	var ans = sc.us.GetUsersByFingerprint2(fingerPrint)
+	util.Success(ctx, ans)
+}
+
 // csv文件下载
 func (sc *StaffController) downloadCsv(ctx *gin.Context) {
 	claims := ctx.MustGet("claims").(*service.CustomClaims)
 	var cfg = config.GetConfig()
+	sc.drs.InsertDownloadRecord(claims.Id, claims.Phone)
 	ctx.Writer.Header().Add("Content-Disposition", fmt.Sprintf("attachment; filename=%s", "staff.csv"))
 	ctx.Writer.Header().Add("Content-Type", "application/octet-stream")
 	ctx.File(cfg.Path.Form + "staff" + claims.Phone + ".csv")

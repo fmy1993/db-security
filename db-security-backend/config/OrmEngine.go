@@ -21,7 +21,7 @@ func OrmEngine(cfg *Config) (*Orm, error) {
 	}
 	// engine.ShowSQL(database.ShowSql)
 	err = engine.Sync2(
-		new(model.User), new(model.BannedIp), new(model.Patient), new(model.Config), new(model.Staff),
+		new(model.User), new(model.BannedIp), new(model.Patient), new(model.Config), new(model.Staff), new(model.DownloadRecord),
 	)
 	if err != nil {
 		return nil, err

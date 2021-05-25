@@ -56,7 +56,7 @@
             <el-menu-item-group>
               <el-menu-item
                 index="/user-home/staff"
-                @click="fileDownload('staff')">病人表
+                @click="fileDownload('staff')">员工表
               </el-menu-item>
             </el-menu-item-group>
           </el-submenu>

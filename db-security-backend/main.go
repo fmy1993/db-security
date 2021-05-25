@@ -28,4 +28,5 @@ func RegisterRouter(engine *gin.Engine) {
 	new(controller.UserController).Router(engine)
 	new(controller.StaffController).Router(engine)
 	new(controller.IpController).Router(engine)
+	new(controller.DownloadRecordController).Router(engine)
 }

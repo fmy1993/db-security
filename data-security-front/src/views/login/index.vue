@@ -43,7 +43,7 @@ export default {
       base64Img: '',
       captchaId: '',
       loginForm: {
-        phone: '17356581383',
+        phone: '12312312312',
         password: '123',
         captcha: '1233'
       },

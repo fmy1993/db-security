@@ -54,6 +54,10 @@
               <el-menu-item index="/admin-home/ip">封禁ip
               </el-menu-item>
             </el-menu-item-group>
+            <el-menu-item-group>
+              <el-menu-item index="/admin-home/record">下载记录
+              </el-menu-item>
+            </el-menu-item-group>
           </el-submenu>
           <el-submenu index="2">
             <template slot="title">
